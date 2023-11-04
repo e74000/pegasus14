@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('starry-bg.avif'); /* Use your space-themed background image */
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 100vh;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for the container */
+    border-radius: 3vh;
+    box-shadow: 0 0 10px rgba(100, 50, 40, 0.1); /* Adjusted the box-shadow color and opacity */
+}
+
+.login-box h1 {
+    color: black; /* Text color for "Space Login" */
+    text-align: center;
+    position: relative; /* Add this line */
+    left: 50%; /* Add this line */
+    transform: translateX(-50%); /* Add this line */
+}
+
+form {
+    padding: 20px;
+}
+
+label, input {
+    display: block;
+    margin: 10px 0;
+    color: white;
+}
+
+input[type="text"], input[type="password"] {
+    color: black;
+    width: 96%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+}
+
+input[type="submit"] {
+    background-color: #007BFF; /* Space-themed blue color */
+    color: black;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 96%;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Slightly darker blue color on hover */
+}
+
+.message {
+    text-align: center;
+    color: #007BFF;
+}
+.terms-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100vh;
+    overflow-y: scroll; /* Enable vertical scrolling */
+}
+
+.terms {
+    padding: 20px;
+    line-height: 1.5;
+    text-align: justify;
+}
