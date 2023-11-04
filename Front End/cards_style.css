@@ -1,0 +1,59 @@
+body {
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #333; /* Dark gray for text */
+    background-color: #f8f8f8; /* Light gray background */
+}
+
+.topnav {
+    background-color: #333; /* Dark gray for the top navigation background */
+    overflow: hidden;
+}
+
+.topnav a {
+    float: left;
+    color: #fff; /* White text for navigation links */
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #555; /* Darker gray on hover for navigation links */
+    color: #fff;
+}
+
+.topnav a.active {
+    background-color: #ccc; /* Light gray for active/current link */
+    color: #333;
+}
+
+.card {
+    width: 90vw;
+    height: 80vh;
+    background-color: #fff; /* White background for cards */
+    margin: auto;
+    margin-top: 5vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for cards */
+    touch-action: pan-y; /* Enables swiping on touch devices */
+}
+
+.card h1 {
+    width: 90vw;
+    text-align: center;
+    color: #333; /* Dark gray for headings */
+}
+
+.card img {
+    width: 85vw;
+    margin-left: 2.5vw;
+}
+
+.card p {
+    width: 75vw;
+    margin-left: 2.5vw;
+    text-align: center;
+    color: #555; /* Slightly darker gray for text within cards */
+}
