@@ -6,7 +6,6 @@ body {
     background-repeat: repeat; /* Repeating background */
     background-size: cover;
     background-attachment: fixed;
-    font-family: Arial, sans-serif;
     color: #fff;
 }
 
@@ -29,23 +28,28 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: TaHoma;
 }
 
 h2 {
     margin: 0;
 }
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
 
 .login-button {
-    background-color: grey;
     color: #fff;
-    padding: 5px 20px;
-    border-radius: 50%;
+    padding: 5px 5px;
     text-decoration: none;
-    border: 0.1vh solid white;
 }
 
 .login-button:hover {
-    background-color: darkgray;
+    text-decoration: underline;
 }
 
 nav {
