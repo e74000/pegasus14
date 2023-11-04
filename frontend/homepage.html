@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>E-Commerce App Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* CSS Styles for the Home Page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        nav {
+            background-color: #555;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background-color: #777;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .product {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 25%;
+            min-width: 275px;
+            height: 100%;
+            min-height: 500px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        .product h2 {
+            font-size: 1.2em;
+        }
+        @media screen and (max-width: 768px) {
+            .product {
+                width: 100%;
+                min-width: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cosmic Couture</h1>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Shop</a>
+        <a href="#">Categories</a>
+        <a href="#">Cart</a>
+    </nav>
+    <div class="container">
+        <h2>Featured Products</h2>
+        <div class="product">
+            <h2>Demo</h2>
+        </div>
+        <div class="product">
+            <h2>Product 2</h2>
+        </div>
+        <div class="product">
+            <h2>Register</h2>
+        </div>
+    </div>
+</body>
+</html>
