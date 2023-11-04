@@ -60,7 +60,16 @@ func main() {
 			return
 		}
 
-		data, err := json.Marshal(ParseRows(rows))
+		products := make([]Product, 0)
+
+		for rows.Next() {
+			var product Product
+			err = rows.Scan(&product.SKU, &product.Title, &product.Img, &product.Description, &product.Price)
+
+			products = append(products, product)
+		}
+
+		data, err := json.Marshal(products)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
