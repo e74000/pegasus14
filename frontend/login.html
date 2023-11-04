@@ -3,57 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login / Sign Up</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            width: 70%;
-            max-width: 70vh;
-            background-color: grey;
-            border-radius: 3vh;
-            box-shadow: 0 0 10px rgba(100, 50, 40, 10);
-        }
-        .form {
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-        }
-        label, input {
-            display: block;
-            margin: 10px 0;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        .message {
-            text-align: center;
-            color: #007BFF;
-        }
-    </style>
+    <link rel="stylesheet" href="login_style.css">
+
 </head>
 <body>
     <div class="container">
@@ -67,7 +18,7 @@
 
             <input type="submit" value="Login">
         </form>
-        <p class="message">Don't have an account? <a href="javascript:void(0);" id="signupLink">Sign Up</a></p>
+    l    <p class="message">Don't have an account? <a href="javascript:void(0);" id="signupLink">Sign Up</a></p>
     </div>
 
     <div class="container" id="signupForm" style="display: none;">
@@ -79,27 +30,20 @@
             <label for="newPassword">Password:</label>
             <input type="password" id="newPassword" name="newPassword" required>
 
+            <label for="newEmail">Email:</label>
+            <input type="text" id="newEmail" name="newEmail" required>
+
+            <label for="newPhonenNumber">Password:</label>
+            <input type="text" id="newPhoneNumber" name="newPhoneNumber" required>
+            
+            <div class="terms-button">
+                <button><a href="terms_and_conditions.html" target="_blank">Terms and Conditions</a></button>
+            </div>
             <input type="submit" value="Sign Up">
         </form>
         <p class="message">Already have an account? <a href="javascript:void(0);" id="loginLink">Login</a></p>
     </div>
 
-    <script>
-        // JavaScript to toggle between login and sign-up forms
-        const loginForm = document.querySelector('.container');
-        const signupForm = document.getElementById('signupForm');
-        const loginLink = document.getElementById('loginLink');
-        const signupLink = document.getElementById('signupLink');
-
-        loginLink.addEventListener('click', () => {
-            loginForm.style.display = 'block';
-            signupForm.style.display = 'none';
-        });
-
-        signupLink.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            signupForm.style.display = 'block';
-        });
-    </script>
+    <script src="login_script.js"></script>
 </body>
 </html>
