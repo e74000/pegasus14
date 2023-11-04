@@ -1,7 +1,9 @@
 body {
     font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #333; /* Dark gray for text */
-    background-color: #f8f8f8; /* Light gray background */
+    background-image: url("background.avif");
+    background-repeat: no-repeat;
+    background-size: cover; /* Light gray background */
 }
 nav {
     background-color: #555;
@@ -20,7 +22,7 @@ nav a:hover {
 .card {
     width: 90vw;
     height: 80vh;
-    background-color: #fff; /* White background for cards */
+    background-color: rgba(255, 255, 255, 0.8); /* White background for cards */
     margin: auto;
     margin-top: 5vh;
     border-radius: 20px;

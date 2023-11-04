@@ -44,21 +44,25 @@ function handleTouchMove(event) {
     const currentX = event.touches[0].clientX;
     const deltaX = 1.2 * (currentX - startX);
 
-    // Calculate color intensity based on current swipe distance
     const intensity = 0.2 * Math.pow(Math.min(1.2, Math.abs(deltaX) / threshold), 2);
 
-    // Change the background color gradually
+    let red, green, blue;
+
     if (deltaX > 0) {
         // Gradually turn green as it moves to the right
-        swipeCard.style.backgroundColor = `rgba(0, 255, 0, ${intensity})`;
+        red = 255 - Math.round(255 * intensity);
+        green = 255;
+        blue = 255 - Math.round(255 * intensity);
     } else {
         // Gradually turn gray as it moves to the left
         const grayIntensity = 0.5 * Math.pow(Math.min(1.2, Math.abs(deltaX) / threshold), 2);
-        swipeCard.style.backgroundColor = `rgba(128, 128, 128, ${grayIntensity})`;
+        red = green = blue = 255 - Math.round(127 * grayIntensity);
     }
 
+    swipeCard.style.backgroundColor = `rgba(${red}, ${green}, ${blue},0.8)`;
     swipeCard.style.transform = `translateX(${deltaX}px)`;
 }
+
 
 
 
