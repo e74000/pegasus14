@@ -11,13 +11,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"io"
 	"net/http"
+	"regexp"
 	"strconv"
 	"time"
 )
 
 func main() {
 	dbPath := ""
+	webPath := ""
 	flag.StringVar(&dbPath, "p", "database.sqlite", "the path to the database")
+	flag.StringVar(&webPath, "w", "../frontend/homepage.html", "the path to the homepage")
 	flag.Parse()
 
 	db, err := sql.Open("sqlite3", dbPath)
@@ -99,6 +102,12 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		re := regexp.MustCompile(`^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$`)
+		if !re.MatchString(user.Email) {
+			http.Error(w, "invalid email", http.StatusBadRequest)
 			return
 		}
 
@@ -241,6 +250,10 @@ func main() {
 
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write(data)
+	})
+
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, webPath)
 	})
 
 	if err = http.ListenAndServe(":8080", router); err != nil {
