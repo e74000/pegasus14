@@ -13,6 +13,7 @@ body {
 }
 
 .container {
+    height: 70%;
     width: 90%;
     max-width: 100vh;
     background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for the container */
@@ -30,6 +31,7 @@ body {
 
 form {
     padding: 20px;
+    align-items: start;
 }
 
 label, input {
@@ -54,7 +56,7 @@ input[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 96%;
+    width: 100%;
 }
 
 input[type="submit"]:hover {
