@@ -3,8 +3,11 @@ let startX;
 let currentCardIndex = 0;
 
 const cardsData = [
-    { name: 'Product 1', imageUrl: 'product1.jpg', description: 'Description 1' },
-    { name: 'Product 2', imageUrl: 'product2.jpg', description: 'Description 2' },
+    { name: 'Product 1', imageUrl: 'product1.jpg', description: 'Description 1', price: '$19.99' },
+    { name: 'Product 2', imageUrl: 'product2.jpg', description: 'Description 2', price: '$29.99' },
+    { name: 'Product 3', imageUrl: 'product3.jpg', description: 'Description 3', price: '$39.99' },
+    { name: 'Product 4', imageUrl: 'product4.jpg', description: 'Description 4', price: '$49.99' },
+    { name: 'Product 5', imageUrl: 'product5.jpg', description: 'Description 5', price: '$59.99' },
     // Add more card data as needed
 ];
 
@@ -20,9 +23,12 @@ function initCard() {
 function updateCard() {
     const currentCardData = cardsData[currentCardIndex];
     swipeCard.innerHTML = `
-        <h1 class="cardHeader">${currentCardData.name}</h1>
-        <img class="cardImage" src="${currentCardData.imageUrl}" alt="Product Image">
-        <p>${currentCardData.description}</p>
+    <h1 class="cardHeader">${currentCardData.name}</h1>
+    <img class="cardImage" src="${currentCardData.imageUrl}" alt="Product Image">
+    <div class="cardDescription">
+        <span>${currentCardData.description}</span>
+        <span>Price: <b>${currentCardData.price}</b></span>
+    </div>
     `;
 }
 
@@ -31,26 +37,72 @@ function handleTouchStart(event) {
 }
 
 function handleTouchMove(event) {
+    const threshold = 100;
+
     if (!startX) return;
 
     const currentX = event.touches[0].clientX;
-    const deltaX = currentX - startX;
+    const deltaX = 1.2 * (currentX - startX);
+
+    // Calculate color intensity based on current swipe distance
+    const intensity = 0.2 * Math.pow(Math.min(1.2, Math.abs(deltaX) / threshold), 2);
+
+    // Change the background color gradually
+    if (deltaX > 0) {
+        // Gradually turn green as it moves to the right
+        swipeCard.style.backgroundColor = `rgba(0, 255, 0, ${intensity})`;
+    } else {
+        // Gradually turn gray as it moves to the left
+        const grayIntensity = 0.5 * Math.pow(Math.min(1.2, Math.abs(deltaX) / threshold), 2);
+        swipeCard.style.backgroundColor = `rgba(128, 128, 128, ${grayIntensity})`;
+    }
 
     swipeCard.style.transform = `translateX(${deltaX}px)`;
 }
 
-function handleTouchEnd() {
+
+
+function handleTouchEnd(event) {
     const threshold = 100; // Adjust the threshold as needed
 
-    if (startX && startX - event.changedTouches[0].clientX > threshold) {
-        // Swipe left, show the next card
-        currentCardIndex = (currentCardIndex + 1) % cardsData.length;
+    if (startX) {
+        const deltaX = startX - event.changedTouches[0].clientX;
+
+        if (deltaX > threshold) {
+            // Swipe left, show the next card
+            currentCardIndex = (currentCardIndex + 1) % cardsData.length;
+        } else if (deltaX < -threshold) {
+            // Swipe right, show the previous card
+            currentCardIndex = (currentCardIndex - 1 + cardsData.length) % cardsData.length;
+
+            // Show a popup for "Added to Basket"
+            showAddedToBasketPopup();
+        }
     }
 
+    // Reset styles
     swipeCard.style.transform = 'translateX(0)';
+    swipeCard.style.backgroundColor = ''; // Reset background color
+
     startX = null;
 
     // Update the UI with the next card
     updateCard();
 }
 
+// Your existing JavaScript code
+
+function showAddedToBasketPopup() {
+    const modal = document.getElementById('addedToBasketModal');
+    modal.style.display = 'flex';
+
+    // Close the modal after 0.5 seconds
+    setTimeout(() => {
+        closeAddedToBasketModal();
+    }, 300);
+}
+
+function closeAddedToBasketModal() {
+    const modal = document.getElementById('addedToBasketModal');
+    modal.style.display = 'none';
+}
