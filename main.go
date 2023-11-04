@@ -19,8 +19,8 @@ import (
 func main() {
 	dbPath := ""
 	webPath := ""
-	flag.StringVar(&dbPath, "p", "database.sqlite", "the path to the database")
-	flag.StringVar(&webPath, "w", "../frontend/homepage.html", "the path to the homepage")
+	flag.StringVar(&dbPath, "p", "data/database.sqlite", "the path to the database")
+	flag.StringVar(&webPath, "w", "pages/", "the path to the homepage")
 	flag.Parse()
 
 	db, err := sql.Open("sqlite3", dbPath)
@@ -252,8 +252,22 @@ func main() {
 		_, _ = w.Write(data)
 	})
 
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, webPath)
+		http.ServeFile(w, r, "pages/homepage.html")
+	})
+
+	router.HandleFunc("/login/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "pages/login.html")
+	})
+
+	router.HandleFunc("/app/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "pages/cards_page.html")
+	})
+
+	router.HandleFunc("/terms_and_conditions/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "pages/terms_and_conditions.html")
 	})
 
 	if err = http.ListenAndServe(":8080", router); err != nil {

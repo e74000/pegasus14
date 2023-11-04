@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login / Sign Up</title>
-    <link rel="stylesheet" href="login_style.css">
+    <link rel="stylesheet" href="/static/css/login_style.css">
 
 </head>
 <body>
     <div class="container">
         <h2>Login</h2>
-        <form class="form" action="cards_page.html" method="POST">
+        <form class="form" action="/app/" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
@@ -23,7 +23,7 @@
 
     <div class="container" id="signupForm" style="display: none;">
         <h2>Sign Up</h2>
-        <form class="form" action="cards_page.html" method="POST">
+        <form class="form" action="/app/" method="POST">
             <label for="newUsername">Username:</label>
             <input type="text" id="newUsername" name="newUsername" required>
 
@@ -33,17 +33,17 @@
             <label for="newEmail">Email:</label>
             <input type="text" id="newEmail" name="newEmail" required>
 
-            <label for="newPhonenNumber">Password:</label>
+            <label for="newPhoneNumber">Password:</label>
             <input type="text" id="newPhoneNumber" name="newPhoneNumber" required>
             
             <div class="terms-button">
-                <button><a href="terms_and_conditions.html" target="_blank">Terms and Conditions</a></button>
+                <button><a href="/terms_and_conditions/" target="_blank">Terms and Conditions</a></button>
             </div>
             <input type="submit" value="Sign Up">
         </form>
         <p class="message">Already have an account? <a href="javascript:void(0);" id="loginLink">Login</a></p>
     </div>
 
-    <script src="login_script.js"></script>
+    <script src="/static/js/login_script.js"></script>
 </body>
 </html>
