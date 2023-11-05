@@ -8,25 +8,27 @@
 
 </head>
 <body>
+    <video autoplay muted loop id="video-background">
+        <source src="/static/images/stars.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     <header>
         <div class="dropdown">
             <button class="dropbtn">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="dropdown-content">
-                <a href="#">About</a>
+                <a href="/">Home</a>
                 <a href="https://www.coggles.com">Shop</a>
                 <a href="#">Categories</a>
                 <a href="#">Cart</a>
-                <a href="#">Services</a>
-                <a href="#">Contact</a>
             </div>
         </div>
     </header>
 
 
 <div class="container">
-    <h1>Login</h1>
+    <h1 style="font-size: 65px; text-decoration: underline;">Login</h1>
     <form class="form" id="validation-form">
         <label for="validate_email">Username:</label>
         <input type="text" id="validate_email" name="email" required>
@@ -37,10 +39,10 @@
         <input type="submit" id="validate" value="Login">
     </form>
 
-    <p class="message">Don't have an account? <a href="javascript:void(0);" id="signupLink">Sign Up</a></p>
+    <p class="message a">Don't have an account? <a href="javascript:void(0);" id="signupLink">Sign Up</a></p>
 </div>
 
-<div class="container" id="signupForm" style="display: none;">
+<div class="container" id="signupForm" style="display: none; height:1100px;">
     <h2>Sign Up</h2>
     <form id="registration-form">
         <label for="register_email">Email:</label>
@@ -49,7 +51,7 @@
         <label for="register_password">Password:</label>
         <input type="password" id="register_password" name="password" required><br>
 
-        <a href="/terms_and_conditions/">Read our Terms and Conditions</a>
+        <p class="message"><a href="/terms_and_conditions/">Read our Terms and Conditions</a></p>
 
         <input type="submit" value="Register">
 
@@ -57,11 +59,15 @@
         <div id="register_response_message"></div>
     </form>
 
-    <p class="message">Already have an account? <a href="javascript:void(0);" id="loginLink">Login</a></p>
+    <p class="message a">Already have an account? <a href="javascript:void(0);" id="loginLink">Login</a></p>
 </div>
 
 
 
-<script src="/static/js/login_script.js"></script>
+    <script src="/static/js/login_script.js"></script>
+    <script>
+        const video = document.getElementById("video-background");
+        video.playbackRate = 0.5;
+    </script>
 </body>
 </html>
