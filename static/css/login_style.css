@@ -12,14 +12,70 @@ body {
     text-align: center;
 }
 
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    z-index: 9;
+    display: flex;
+    justify-content: space-between;
+}
 .container {
-    height: 70%;
+    height: 30vh;
     width: 90%;
     max-width: 100vh;
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for the container */
+    background: rgba(0, 0, 0, 0.9); /* Semi-transparent black background for the container */
     border-radius: 3vh;
     box-shadow: 0 0 10px rgba(100, 50, 40, 0.1); /* Adjusted the box-shadow color and opacity */
 }
+
+/* Add space-themed styling to the dropdown button */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    z-index: 15;
+}
+
+.dropbtn {
+    color: white; /* White text color */
+    background: transparent; /* Transparent background */
+    padding: 30px 30px;
+    font-size: 70px;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Add space-themed styling to the dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1f1f1f; /* Dark gray background */
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 4; /* Set a higher z-index to appear in front of the button and image */
+}
+
+.dropdown-content a {
+    color: #00aaff; /* Light blue text color */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #333; /* Darker gray on hover */
+}
+
+/* Display the dropdown content when hovering over the dropdown button */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 
 .login-box h1 {
     color: black; /* Text color for "Space Login" */

@@ -4,10 +4,29 @@
     <meta charset="UTF-8">
     <title>Login / Sign Up</title>
     <link rel="stylesheet" href="/static/css/login_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
+    <header>
+        <div class="dropdown">
+            <button class="dropbtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">About</a>
+                <a href="https://www.coggles.com">Shop</a>
+                <a href="#">Categories</a>
+                <a href="#">Cart</a>
+                <a href="#">Services</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </header>
+
+
 <div class="container">
-    <h2>Login</h2>
+    <h1>Login</h1>
     <form class="form" id="validation-form">
         <label for="validate_email">Username:</label>
         <input type="text" id="validate_email" name="email" required>
@@ -38,7 +57,7 @@
         <div id="register_response_message"></div>
     </form>
 
-    <p class=message">Already have an account? <a href="javascript:void(0);" id="loginLink">Login</a></p>
+    <p class="message">Already have an account? <a href="javascript:void(0);" id="loginLink">Login</a></p>
 </div>
 
 
