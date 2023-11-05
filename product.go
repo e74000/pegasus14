@@ -9,9 +9,8 @@ type Product struct {
 }
 
 type Impression struct {
-	User         string  `json:"user"`
-	Product      int     `json:"product"`
-	Liked        int     `json:"liked"`
-	ViewDuration float64 `json:"viewDuration"`
-	Claim        Claim   `json:"claim"`
+	Email string `json:"email"`
+	SKU   int    `json:"sku"`
+	Swipe int    `json:"swipe"`
+	Claim Claim  `json:"claim"`
 }

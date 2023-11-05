@@ -11,7 +11,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"io"
 	"net/http"
-	"regexp"
 	"strconv"
 	"time"
 )
@@ -23,12 +22,15 @@ func main() {
 	flag.StringVar(&webPath, "w", "pages/", "the path to the homepage")
 	flag.Parse()
 
+	log.Info("connecting to database")
+
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal("failed to connect to db", "err", err)
 	}
 
 	defer func() {
+		log.Info("closed database connection")
 		_ = db.Close()
 	}()
 
@@ -37,11 +39,7 @@ func main() {
 		log.Fatal("failed to ping db", "err", err)
 	}
 
-	getStmt, err := db.Prepare("select * from Products where sku = ?")
-	if err != nil {
-		log.Fatal("failed to prepare get statement", "err", err)
-		return
-	}
+	log.Info("registering handlers")
 
 	router := mux.NewRouter().StrictSlash(true)
 
@@ -54,7 +52,7 @@ func main() {
 			return
 		}
 
-		rows, err := getStmt.Query(sku)
+		rows, err := db.Query("select * from Products where sku = ?", sku)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
@@ -69,6 +67,8 @@ func main() {
 			products = append(products, product)
 		}
 
+		_ = rows.Close()
+
 		data, err := json.Marshal(products)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -76,7 +76,7 @@ func main() {
 		}
 
 		_, _ = w.Write(data)
-	}).Methods("GET")
+	})
 
 	router.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("select sku from Products")
@@ -96,6 +96,8 @@ func main() {
 			skus = append(skus, sku)
 		}
 
+		_ = rows.Close()
+
 		data, err := json.Marshal(skus)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -104,24 +106,24 @@ func main() {
 
 		w.WriteHeader(http.StatusFound)
 		_, _ = w.Write(data)
-	}).Methods("GET")
+	})
 
 	router.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		log.Info("got registration request")
+
 		var user User
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			log.Error("failed to decode json", "err", err)
+			http.Error(w, "failed to decode request", http.StatusBadRequest)
 			return
 		}
 
-		re := regexp.MustCompile(`^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$`)
-		if !re.MatchString(user.Email) {
-			http.Error(w, "invalid email", http.StatusBadRequest)
-			return
-		}
+		log.Info("got user details", "email", user.Email, "password", user.Password)
 
 		rows, err := db.Query("select count(id) from Users where email = ?", user.Email)
 		if err != nil {
+			log.Error("failed to query db", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -130,41 +132,56 @@ func main() {
 		rows.Next()
 
 		if err = rows.Scan(&count); err != nil {
+			log.Error("failed read response db", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
+		_ = rows.Close()
+
 		if count != 0 {
+			log.Error("user already exists")
 			http.Error(w, "user already exists", http.StatusConflict)
 			return
 		}
 
 		hashed, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 		if err != nil {
+			log.Error("failed to generate password hash", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		_, err = db.Query("insert into Users (id, email, password_hash) VALUES ((select max(id)+1 from Users), ?, ?)", user.Email, string(hashed))
+		log.Info("got password hash", "hash", string(hashed))
+
+		_, err = db.Exec("INSERT INTO Users (id, email, password_hash) VALUES (COALESCE((SELECT max(id)+1 FROM Users), 1), ?, ?)", user.Email, string(hashed))
 		if err != nil {
+			log.Error("failed to query db", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
+
+		log.Info("user successfully created")
 
 		w.WriteHeader(http.StatusCreated)
 		log.Info("created user", "email", user.Email, "password", user.Password)
-	}).Methods("POST")
+	})
 
 	router.HandleFunc("/validate", func(w http.ResponseWriter, r *http.Request) {
+		log.Info("validating user")
 		var user User
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			log.Error("failed to decode request", "err", err)
+			http.Error(w, "could not decode request", http.StatusBadRequest)
 			return
 		}
 
-		rows, err := db.Query("select * from Users where email = ?", user.Email)
+		log.Info("got user details", "email", user.Email, "password", user.Password)
+
+		rows, err := db.Query("select email, password_hash from Users where email = ?", user.Email)
 		if err != nil {
+			log.Error("error running query", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -177,25 +194,36 @@ func main() {
 		var expect User
 		err = rows.Scan(&expect.Email, &expect.Password)
 		if err != nil {
+			log.Error("error fetching email", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
+		_ = rows.Close()
+
+		log.Info("comparing passwords", "expected_hash", expect.Password, "password", user.Password)
+
 		err = bcrypt.CompareHashAndPassword([]byte(expect.Password), []byte(user.Password))
 		if err != nil {
+			log.Error("password does not match")
 			http.Error(w, "forbidden", http.StatusUnauthorized)
 			return
 		}
 
+		log.Info("signing token")
+
 		token, err := SignClaim(user.Email, time.Now().Add(time.Hour*24))
 		if err != nil {
+			log.Error("error creating token", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
+		log.Info("issued token", "token", token)
+
 		w.WriteHeader(http.StatusOK)
 		_, _ = io.WriteString(w, token)
-	}).Methods("POST")
+	})
 
 	router.HandleFunc("/impression", func(w http.ResponseWriter, r *http.Request) {
 		var impression Impression
@@ -216,24 +244,26 @@ func main() {
 			return
 		}
 
-		if impression.Claim.Email != impression.User {
+		if impression.Claim.Email != impression.Email {
 			http.Error(w, "not authorised", http.StatusUnauthorized)
 			return
 		}
 
-		_, err = db.Query("insert into Impressions (user, product, liked, view_seconds) VALUES ((select id from Users where user = ?), ?, ?, ?)")
+		_, err = db.Exec("insert into Impressions (email, sku, swipe) VALUES (?, ?, ?)", impression.Email, impression.SKU, impression.Swipe)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
-	}).Methods("POST")
+	})
 
 	router.HandleFunc("/suggest/{email}", func(w http.ResponseWriter, r *http.Request) {
 		email := mux.Vars(r)["email"]
 
-		rows, err := db.Query("SELECT p.sku FROM main.Products AS p LEFT JOIN main.Impressions AS i ON p.sku = i.product AND i.user = ? WHERE i.product IS NULL LIMIT 10", email)
+		log.Info("getting suggestions", "email", email)
+
+		rows, err := db.Query("SELECT p.sku FROM main.Products AS p LEFT JOIN main.Impressions AS i ON p.sku = i.sku AND i.email = ? WHERE i.sku IS NULL LIMIT 10", email)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
@@ -250,6 +280,10 @@ func main() {
 
 			skus = append(skus, sku)
 		}
+
+		_ = rows.Close()
+
+		log.Info("got skus", "skus", skus)
 
 		data, err := json.Marshal(skus)
 		if err != nil {
@@ -278,6 +312,8 @@ func main() {
 	router.HandleFunc("/terms_and_conditions/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "pages/terms_and_conditions.html")
 	})
+
+	log.Info("starting server")
 
 	if err = http.ListenAndServe(":8080", router); err != nil {
 		log.Fatal("failed to start http server", "err", err)
