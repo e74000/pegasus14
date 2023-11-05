@@ -161,6 +161,8 @@ func main() {
 
 		log.Info("got password hash", "hash", string(hashed))
 
+		_ = rows.Close()
+
 		_, err = db.Exec("INSERT INTO Users (id, email, password_hash) VALUES (COALESCE((SELECT max(id)+1 FROM Users), 1), ?, ?)", user.Email, string(hashed))
 		if err != nil {
 			log.Error("failed to query db", "err", err)
