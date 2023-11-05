@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Background Web Page</title>
+    <link rel="stylesheet" type="text/css" href="home_styles.css"> <!-- Link to your external CSS file -->
+</head>
+<body>
+    <video autoplay muted loop id="video-background">
+        <source src="stars.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <header>
+        <div class="logo">
+            <nav class="nav">
+                <ul>
+                    <img src="logo.png" alt="Tinder Logo">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="https://www.coggles.com">Shop</a></li>
+                    <li><a href="#">Categories</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="dropdown">
+        <button class="dropbtn">Menu</button>
+        <div class="dropdown-content">
+            <a href="#">About</a>
+            <a href="#">Cart</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Your page content goes here -->
+        <h1>Cosmic Couture</h1>
+    </div>
+    
+    <div class="content2">
+        <!-- Your page content goes here -->
+        <h1>Swipe wrong. Amazon/tinder themed e-commerce app</h1>
+    </div>
+
+    <div class="create-account-button">
+        <a href="login.html">
+            <button>Create Account</button>
+        </a>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="50" viewBox="0 0 1000 50" style="z-index: 11; position: absolute; top: 80%; left: -5px;">
+        <!-- First Set of Hollow Diamonds -->
+        <polygon points="190,0 215,25 190,50 165,25" fill="none" stroke="white" stroke-width="2" />
+        <polygon points="240,0 215,25 240,50 265,25" fill="none" stroke="white" stroke-width="2" />
+    
+        <!-- Second Set of Hollow Diamonds -->
+        <polygon points="490,0 515,25 490,50 465,25" fill="none" stroke="white" stroke-width="2" />
+        <polygon points="540,0 515,25 540,50 565,25" fill="none" stroke="white" stroke-width="2" />
+    
+        <!-- Third Set of Hollow Diamonds -->
+        <polygon points="790,0 815,25 790,50 765,25" fill="none" stroke="white" stroke-width="2" />
+        <polygon points="840,0 815,25 840,50 865,25" fill="none" stroke="white" stroke-width="2" />
+    
+        <!-- Horizontal Lines Connecting Diamonds -->
+        <line x1="265" y1="25" x2="467" y2="25" stroke="white" stroke-width="2" />
+        <line x1="565" y1="25" x2="764" y2="25" stroke="white" stroke-width="2" />
+    </svg>
+    
+
+    
+    
+    
+    
+    <p class="bottom-text">000,000,000 swipes</p>
+    
+    <div id="image-container">
+        <img src="iphone.png" alt="Your Image">
+    </div>
+
+    <script>
+        const video = document.getElementById("video-background");
+        video.playbackRate = 0.5;
+    </script>
+</body>
+</html>
