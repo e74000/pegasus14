@@ -298,7 +298,7 @@ func main() {
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "pages/homepage.html")
+		http.ServeFile(w, r, "Home page v2/homepage.html")
 	})
 
 	router.HandleFunc("/login/", func(w http.ResponseWriter, r *http.Request) {
