@@ -19,7 +19,7 @@ let login_token = getCookieAsJSON("login_token")
 
 let cards = []
 
-// let current = {}
+ let currentCard = {}
 
 initCard()
 
@@ -32,6 +32,8 @@ function initCard() {
 
 function updateCard(current) {
     console.log(current)
+
+    currentCard = current
 
     swipeCard.innerHTML = `
     <h1 class="cardHeader">${current.title}</h1>
@@ -118,7 +120,7 @@ function handleTouchEnd(event) {
 
             let impression = {
                 email: login_token.email,
-                sku: current.sku,
+                sku: currentCard.sku,
                 swipe: 0 + (deltaX > 0),
                 claim: login_token,
             }
@@ -132,12 +134,6 @@ function handleTouchEnd(event) {
                 },
                 body: JSON.stringify(impression),
             })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok")
-                    }
-                    return response.json()
-                })
                 .then((data) => {
                     // Handle the response data if needed
                     console.log("PUT request successful:", data)

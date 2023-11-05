@@ -43,7 +43,7 @@ func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/product/{sku}", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/product/{sku}/", func(w http.ResponseWriter, r *http.Request) {
 		skuString := mux.Vars(r)["sku"]
 
 		sku, err := strconv.ParseInt(skuString, 10, 64)
@@ -78,7 +78,7 @@ func main() {
 		_, _ = w.Write(data)
 	})
 
-	router.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/products/", func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("select sku from Products")
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -108,7 +108,7 @@ func main() {
 		_, _ = w.Write(data)
 	})
 
-	router.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/register/", func(w http.ResponseWriter, r *http.Request) {
 		log.Info("got registration request")
 
 		var user User
@@ -167,7 +167,7 @@ func main() {
 		log.Info("created user", "email", user.Email, "password", user.Password)
 	})
 
-	router.HandleFunc("/validate", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/validate/", func(w http.ResponseWriter, r *http.Request) {
 		log.Info("validating user")
 		var user User
 		err := json.NewDecoder(r.Body).Decode(&user)
@@ -225,11 +225,34 @@ func main() {
 		_, _ = io.WriteString(w, token)
 	})
 
-	router.HandleFunc("/impression", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/validate_token/", func(w http.ResponseWriter, r *http.Request) {
+		var claim Claim
+		err := json.NewDecoder(r.Body).Decode(&claim)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		ok, err := VerifyClaim(claim)
+		if err != nil || !ok {
+			http.Error(w, "unauthorised", http.StatusUnauthorized)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		return
+	})
+
+	router.HandleFunc("/impression/", func(w http.ResponseWriter, r *http.Request) {
 		var impression Impression
 		err := json.NewDecoder(r.Body).Decode(&impression)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if impression.SKU == 0 {
+			w.WriteHeader(http.StatusOK)
 			return
 		}
 
@@ -258,7 +281,7 @@ func main() {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	router.HandleFunc("/suggest/{email}", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/suggest/{email}/", func(w http.ResponseWriter, r *http.Request) {
 		email := mux.Vars(r)["email"]
 
 		log.Info("getting suggestions", "email", email)
@@ -295,7 +318,65 @@ func main() {
 		_, _ = w.Write(data)
 	})
 
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	router.HandleFunc("/basket/{email}/", func(w http.ResponseWriter, r *http.Request) {
+		email := mux.Vars(r)["email"]
+
+		rows, err := db.Query("SELECT sku FROM Impressions WHERE email = ? AND swipe = 0", email)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		skus := make([]int, 0)
+
+		for rows.Next() {
+			var sku int
+			err = rows.Scan(&sku)
+			if err != nil {
+				continue
+			}
+
+			skus = append(skus, sku)
+		}
+
+		data, err := json.Marshal(skus)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(data)
+	})
+
+	router.HandleFunc("/swipes/", func(w http.ResponseWriter, r *http.Request) {
+		rows, err := db.Query("SELECT count(swipe) FROM Impressions")
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		if !rows.Next() {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		var count int
+		err = rows.Scan(&count)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		data, err := json.Marshal(count)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(data)
+	})
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "Home page v2/homepage.html")
@@ -312,6 +393,8 @@ func main() {
 	router.HandleFunc("/terms_and_conditions/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "pages/terms_and_conditions.html")
 	})
+
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	log.Info("starting server")
 
