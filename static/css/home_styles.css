@@ -21,7 +21,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px; /* Add padding to adjust the height of the header and create space on the left */
+    padding: 0 20px; /* Add padding to adjust the height of the header and create space on the left */
+    margin: 0;
 }
 
 /* Center the text within the header */
@@ -76,6 +77,7 @@ header {
     min-height: 100%;
     object-fit: cover;
     overflow: hidden;
+    z-index: -1;
 }
 
 /* Style the content on top of the video */
@@ -195,10 +197,29 @@ header {
     left: 41.5%;
     font-family: 'IBMPlexMono-Bold', monospace;
     transform: translateX(-50%);
-    z-index: 8; /* Set a higher z-index to ensure it's on top of other elements */
+    z-index: 9; /* Set a higher z-index to ensure it's on top of other elements */
 }
 
 .create-account-button button {
+    background: linear-gradient(to bottom right, #f14f4f,rgb(220, 53, 220));
+    color: #fff;
+    font-family: 'IBMPlexMono-Bold', monospace;
+    padding: 6% 45%; /* Percentage-based padding for scaling */
+    font-size: 128%; /* Percentage-based font size for scaling */
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.launch-button {
+    position: absolute;
+    top: 70%; /* Adjust the position as needed to place it 3/4 of the way down */
+    left: 41.5%;
+    font-family: 'IBMPlexMono-Bold', monospace;
+    transform: translateX(-50%);
+    z-index: 8; /* Set a higher z-index to ensure it's on top of other elements */
+}
+
+.launch-button button {
     background: linear-gradient(to bottom right, #f14f4f,rgb(220, 53, 220));
     color: #fff;
     font-family: 'IBMPlexMono-Bold', monospace;

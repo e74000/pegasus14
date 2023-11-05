@@ -41,8 +41,6 @@ function setLoginBasket() {
                 document.getElementById("login-basket").innerHTML = ``
                 document.getElementById("login-basket").innerText = ``
 
-
-
                 document.getElementById("login-basket").innerHTML = `
                     <li><a href="/basket/">
                     <span class="material-symbols-outlined">
@@ -50,6 +48,8 @@ function setLoginBasket() {
                     </span>
                     </a>
                 </li>`
+
+                document.getElementsByClassName("create-account-button")[0].setAttribute("hidden", "hidden")
             }
         }
     };
