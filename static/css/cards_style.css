@@ -95,3 +95,12 @@ nav a:hover {
     cursor: pointer;
 }
 
+#out_of_products {
+    text-align: center; /* Center the text horizontally */
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    height: 100vh; /* Center within the viewport's height */
+    color: white;
+    font-size: 54px;
+}

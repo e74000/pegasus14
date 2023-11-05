@@ -16,6 +16,8 @@ import (
 )
 
 func main() {
+	log.SetLevel(log.DebugLevel)
+
 	dbPath := ""
 	webPath := ""
 	flag.StringVar(&dbPath, "p", "data/database.sqlite", "the path to the database")
@@ -46,6 +48,8 @@ func main() {
 	router.HandleFunc("/product/{sku}/", func(w http.ResponseWriter, r *http.Request) {
 		skuString := mux.Vars(r)["sku"]
 
+		log.Debug("querying sku", "sku", skuString)
+
 		sku, err := strconv.ParseInt(skuString, 10, 64)
 		if err != nil {
 			http.Error(w, "bad request", http.StatusBadRequest)
@@ -54,6 +58,7 @@ func main() {
 
 		rows, err := db.Query("select * from Products where sku = ?", sku)
 		if err != nil {
+			log.Error("error running query", "err", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -63,6 +68,8 @@ func main() {
 		for rows.Next() {
 			var product Product
 			err = rows.Scan(&product.SKU, &product.Title, &product.Img, &product.Description, &product.Price)
+
+			log.Debug("got product", "title", product.Title)
 
 			products = append(products, product)
 		}
