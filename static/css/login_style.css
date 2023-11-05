@@ -1,15 +1,25 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'IBMPlexMono-Medium', monospace;
     margin: 0;
     padding: 0;
-    background-image: url('/static/images/starry-bg.avif'); /* Use your space-themed background image */
-    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     color: white;
+    background-color: black;
     text-align: center;
+    position: relative;
+}
+
+#video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Set z-index to a negative value to place it behind other elements */
 }
 
 header {
@@ -19,17 +29,24 @@ header {
     width: 100%;
     text-align: center;
     color: #fff;
-    z-index: 9;
+    z-index: 9; /* Keep z-index as 9 */
     display: flex;
     justify-content: space-between;
 }
+
 .container {
-    height: 30vh;
+    position: relative; /* Change the position to relative */
+    top: 0vh; /* Move the container up by adjusting the top value */
+    height: 40vh;
     width: 90%;
     max-width: 100vh;
-    background: rgba(0, 0, 0, 0.9); /* Semi-transparent black background for the container */
-    border-radius: 3vh;
-    box-shadow: 0 0 10px rgba(100, 50, 40, 0.1); /* Adjusted the box-shadow color and opacity */
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 1.5vh;
+    box-shadow: 0 0 10px rgba(100, 50, 40, 0.1);
+    font-size: 40px;
+    color: white;
+    z-index: 10; /* Keep z-index as 10 for the container */
+
 }
 
 /* Add space-themed styling to the dropdown button */
@@ -37,7 +54,9 @@ header {
     position: relative;
     display: inline-block;
     margin: 10px;
-    z-index: 15;
+    z-index: 20; /* Increase z-index to place the dropdown above the form */
+    color: white;
+    font-size: 40px;
 }
 
 .dropbtn {
@@ -47,7 +66,7 @@ header {
     font-size: 70px;
     border: none;
     cursor: pointer;
-    z-index: 2;
+    z-index: 20; /* Keep z-index as 20 for the button */
 }
 
 /* Add space-themed styling to the dropdown content */
@@ -55,26 +74,33 @@ header {
     display: none;
     position: absolute;
     background-color: #1f1f1f; /* Dark gray background */
-    min-width: 160px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    z-index: 4; /* Set a higher z-index to appear in front of the button and image */
+    color: white;
+    min-width: 60vw;
+    min-height: 30vw;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 30; /* Increase z-index to place the dropdown content above the button and the form */
 }
 
 .dropdown-content a {
-    color: #00aaff; /* Light blue text color */
+    color: white; /* Light blue text color */
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    z-index: 30; /* Keep z-index as 30 for the dropdown content items */
 }
 
 .dropdown-content a:hover {
     background-color: #333; /* Darker gray on hover */
+    z-index: 30; /* Keep z-index as 30 for the hover state */
 }
 
 /* Display the dropdown content when hovering over the dropdown button */
 .dropdown:hover .dropdown-content {
     display: block;
+    z-index: 30; /* Keep z-index as 30 for the hover state */
 }
+
+/* Rest of your CSS styles... */
 
 
 .login-box h1 {
@@ -83,46 +109,78 @@ header {
     position: relative; /* Add this line */
     left: 50%; /* Add this line */
     transform: translateX(-50%); /* Add this line */
+    z-index: 10;
 }
 
 form {
-    padding: 20px;
-    align-items: start;
+    padding: 10px 40px 40px 40px;
+    text-align: left;
+    z-index: 11;
 }
 
 label, input {
     display: block;
     margin: 10px 0;
+    font-size: 50px;
     color: white;
+    z-index: 12;
 }
 
 input[type="text"], input[type="password"] {
-    color: black;
+    color: black; /* Text color */
+    background: white; /* Background color set to white */
+    width: 96%;
+    padding: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+
+input[type="password"] {
+    color: black; /* Text color */
+    background: white; /* Background color set to white */
     width: 96%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    margin-bottom: 60px; /* Add margin to create space below the password input */
+    z-index: 10;
 }
 
 input[type="submit"] {
-    background-color: #007BFF; /* Space-themed blue color */
+    background-color: #007bff; /* Space-themed blue color */
     color: black;
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    margin-top: 20px; /* Add margin to create space above the login button */
+    z-index: 14;
 }
 
-input[type="submit"]:hover {
-    background-color: #0056b3; /* Slightly darker blue color on hover */
-}
 
 .message {
     text-align: center;
+    font-size: 35px;
     color: #007BFF;
+    z-index: 16;
 }
+
+.message a {
+    color: #00aaff; /* Light blue color for links */
+    text-decoration: none; /* Remove underline from links */
+    font-size: 40px;
+    z-index: 17;
+}
+
+.message a:hover {
+    color: #007BFF; /* Darker blue color on link hover */
+    z-index: 18;
+}
+
 .terms-container {
     max-width: 800px;
     margin: 0 auto;
@@ -133,10 +191,12 @@ input[type="submit"]:hover {
     overflow: hidden;
     height: 100vh;
     overflow-y: scroll; /* Enable vertical scrolling */
+    z-index: 19;
 }
 
 .terms {
     padding: 20px;
     line-height: 1.5;
     text-align: justify;
+    z-index: 9;
 }
