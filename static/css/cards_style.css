@@ -1,23 +1,63 @@
+#video-background {
+    position: absolute;
+    top: 0; /* Adjust top position to start from the top */
+    left: 0; /* Adjust left position to start from the left */
+    width: 100vw; /* Use 100vw to cover the entire viewport width */
+    height: 100vh; /* Use 100vh to cover the entire viewport height */
+    object-fit: cover;
+    z-index: -1; /* Set z-index to a negative value to place it behind other elements */
+}
+
 body {
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: #333; /* Dark gray for text */
-    background-image: url("/static/images/background.avif");
-    background-repeat: no-repeat;
-    background-size: cover; /* Light gray background */
+    margin-top: 20px;
+    font-family: 'IBMPlexMono-Bold', monospace;
+    overflow: hidden;
+    background-color: black;
+    padding: 0;
 }
-nav {
-    background-color: #555;
-    display: flex;
-    justify-content: center;
-}
-nav a {
+
+header {
+    margin-left: 0;
+    text-align: center;
     color: #fff;
+    z-index: 9;
+    padding: 0;
+}
+
+.nav ul {
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.nav li {
+    font-size: 20px;
+}
+
+.nav a {
     text-decoration: none;
-    padding: 10px 20px;
+    color: white;
+    transition: color 0.3s;
 }
-nav a:hover {
-    background-color: #777;
+
+.nav a:hover {
+    color: lightgray;
 }
+
+
+/* Style the icon */
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
 
 .card {
     width: 90vw;
@@ -38,8 +78,8 @@ nav a:hover {
 }
 
 .card img {
-    width: 85vw;
-    margin-left: 2.5vw;
+    width: 90vw;
+    margin-left: 0vw;
 }
 
 .card p {

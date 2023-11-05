@@ -63,19 +63,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const response = await fetch(`/suggest/${login_token.email}`);
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error("Network response was not ok"); // Fixed "throw an Error" to "throw new Error"
             }
-
+    
             const data = await response.json();
-
+    
             for (const sku of data) {
                 const skuApiUrl = `/product/${sku}`;
                 const productResponse = await fetch(skuApiUrl);
-
+    
                 if (!productResponse.ok) {
                     throw new Error("Network response was not ok");
                 }
-
+    
                 const product = await productResponse.json();
                 cards.push(product);
             }
@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Error in fillCards: ", error);
         }
     }
+    
 
     function handleTouchStart(event) {
         startX = event.touches[0].clientX;
@@ -90,31 +91,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function handleTouchMove(event) {
         const threshold = 100;
-
+    
         if (!startX) return;
-
+    
         const currentX = event.touches[0].clientX;
         const deltaX = 1.2 * (currentX - startX);
-
+    
         const intensity = 0.2 * Math.pow(Math.min(1.2, Math.abs(deltaX) / threshold), 2);
-
+    
         let red, green, blue;
-
+    
         if (deltaX > 0) {
             // Gradually turn green as it moves to the right
             red = 255 - Math.round(255 * intensity);
             green = 255;
             blue = 255 - Math.round(255 * intensity);
         } else {
-            // Gradually turn gray as it moves to the left
-            const grayIntensity = 0.5 * Math.pow(Math.min(1.2, Math.abs(deltaX) / threshold), 2);
-            red = green = blue = 255 - Math.round(127 * grayIntensity);
+            // Gradually turn red as it moves to the left
+            red = 255;
+            green = 255 - Math.round(255 * intensity);
+            blue = 255 - Math.round(255 * intensity);
         }
-
-        swipeCard.style.backgroundColor = `rgba(${red}, ${green}, ${blue},0.8)`;
+    
+        swipeCard.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 0.8)`;
         swipeCard.style.transform = `translateX(${deltaX}px)`;
     }
-
+    
     function handleTouchEnd(event) {
         const threshold = 100;
 
@@ -159,20 +161,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         startX = null;
     }
 
-    function showAddedToBasketPopup() {
-        const modal = document.getElementById('addedToBasketModal');
-        modal.style.display = 'flex';
-
-        // Close the modal after 0.5 seconds
-        setTimeout(() => {
-            closeAddedToBasketModal();
-        }, 300);
-    }
-
-
     function closeAddedToBasketModal() {
         const modal = document.getElementById('addedToBasketModal');
         modal.style.display = 'none';
+    }
+    
+    function showAddedToBasketPopup() {
+        const modal = document.getElementById('addedToBasketModal');
+        modal.style.display = 'flex';
+    
+        // Close the modal after 0.5 seconds
+        setTimeout(() => {
+            closeAddedToBasketModal();
+        }, 500); // Changed the timeout to 500ms for half a second
     }
 
     initCard();

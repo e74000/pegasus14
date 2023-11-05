@@ -38,7 +38,7 @@ document.getElementById("registration-form").addEventListener("submit", function
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
+            if (xhr.status >= 200 && xhr.status < 300) {
                 // Handle the response here
                 console.log("Registration response:", xhr.responseText);
                 // You can add more code to handle the response as needed
