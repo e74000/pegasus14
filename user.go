@@ -17,9 +17,9 @@ type User struct {
 }
 
 type Claim struct {
-	Email      string
-	ValidUntil time.Time
-	Signature  string
+	Email      string    `json:"email"`
+	ValidUntil time.Time `json:"valid_until"`
+	Signature  string    `json:"signature"`
 }
 
 func SignClaim(email string, validUntil time.Time) (string, error) {
