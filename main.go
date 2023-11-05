@@ -349,6 +349,10 @@ func main() {
 		_, _ = w.Write(data)
 	})
 
+	router.HandleFunc("/basket/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "pages/basket.html")
+	})
+
 	router.HandleFunc("/swipes/", func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("SELECT count(swipe) FROM Impressions")
 		if err != nil {
@@ -379,7 +383,7 @@ func main() {
 	})
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "Home page v2/homepage.html")
+		http.ServeFile(w, r, "pages/home.html")
 	})
 
 	router.HandleFunc("/login/", func(w http.ResponseWriter, r *http.Request) {

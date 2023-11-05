@@ -16,16 +16,14 @@
     </video>
     <header>
         <nav class="nav">
-            <ul>
-                <li><a href="login.html">
+            <ul id="login-basket">
+                <li><a href="/login/">
                     <span class="material-symbols-outlined">
                         account_circle
                     </span>
                     </a>
                 </li>
-                <li><a href="login.html">Sign in</a></li>
-                <li style="padding: 0px 40px"><a href="https://www.coggles.com">Shop</a></li>
-                <li><a href="#">Categories</a></li>
+                <li><a href="/login/">Sign in</a></li>
             </ul>
         </nav>
     </header>
@@ -33,7 +31,7 @@
 
     <!-- <div class="dropdown">
         <button class="dropbtn">
-            <i class="fas fa-bars"></i> <!-- Font Awesome "hamburger" icon 
+            <i class="fas fa-bars"></i> Font Awesome "hamburger" icon
         </button>
         <div class="dropdown-content">
             <a href="#">About</a>
@@ -81,15 +79,12 @@
     </svg>
     
     
-    <p class="bottom-text">000,000,000 swipes</p>
+    <p class="bottom-text" id="swipes">000,000,000 swipes</p>
     
     <div id="image-container">
         <img src="static/images/iphone.png" alt="Your Image">
     </div>
 
-    <script>
-        const video = document.getElementById("video-background");
-        video.playbackRate = 0.5;
-    </script>
+    <script src="static/js/home_script.js"></script>
 </body>
 </html>
